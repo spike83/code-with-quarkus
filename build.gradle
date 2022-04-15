@@ -23,9 +23,6 @@ dependencies {
     implementation 'io.quarkus:quarkus-smallrye-health'
     implementation 'io.quarkus:quarkus-jackson'
 
-    // Kafka
-    implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
-
 
 }
 
