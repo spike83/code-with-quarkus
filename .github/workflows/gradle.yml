@@ -1,0 +1,31 @@
+name: Java CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'features/**'
+      - 'feat/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Environment Variables
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "IMAGE=spoud/raw-dispatcher-java" >> $GITHUB_ENV
+          echo "TAG=1.2.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+      - name: Set Environment Variables
+        if: github.ref != 'refs/heads/master'
+        run: |
+          echo "IMAGE=spoud/raw-dispatcher-java" >> $GITHUB_ENV
+          echo "TAG=feat-1.2.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+
+      - uses: actions/checkout@master
+      - name: Set up JDK
+        uses: actions/setup-java@master
+        with:
+          java-version: 17
+          distribution: temurin
+      - name: Build with Gradle
+        run: ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true
